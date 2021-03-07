@@ -1,5 +1,5 @@
 /*
-Classe adibilita a convalidare una nuova connessione SFTP ai server di Amazon Vendor, superando i test di Amazon per la connessione.
+Class use to validate a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
  */
 package it.trv.vendorsftpconnection;
 
@@ -11,29 +11,29 @@ public class AmazonVendorSFTPConnectionValidator {
         String settingsFilePath = "settings_and_keys/AmazonVendorConnectionSettings.txt";
         SFTPBasedMessageExchangerForAmazonVendor connectionToVendor = null;
         try {
-            //Richiedo all'utente la passphrase
-            String passphrase = JOptionPane.showInputDialog("Inserisci la password per la connessione con i server di Amazon Vendor:");
+            //Asks the passphrase to the user
+            String passphrase = JOptionPane.showInputDialog("Insert the password for the connection with the Amazon Vendor server:");
 
             connectionToVendor = new SFTPBasedMessageExchangerForAmazonVendor(settingsFilePath, passphrase);
 
-            System.out.println("Connessione creata senza errori");
+            System.out.println("Connection created with not errors");
 
             System.out.println(connectionToVendor.receive());
 
-            connectionToVendor.send("Questo è un test.","ConnectivityTest");
+            connectionToVendor.send("This is a test.","ConnectivityTest");
 
-            System.out.println("Completato senza errori");
+            System.out.println("Validation completed with no errors.");
         } catch (ConnectionException e){
-            System.out.println("C'è stato un errore durante la crezione della connessione");
+            System.out.println("There was an error during the creation of the connection.");
             e.printStackTrace();
         } catch (IOException e){
-            System.out.println("C'è stato un errore durante la lettura del file delle impostazioni");
+            System.out.println("There was an error while reading the settings file.");
             e.printStackTrace();
         } catch (MessageReceptionException e){
-            System.out.println("C'è stato un errore durante la ricezione del messaggio");
+            System.out.println("There was an error during the receiving of the message.");
             e.printStackTrace();
         } catch (MessageForwardingException e){
-            System.out.println("C'è stato un errore durante l'invio del messaggio");
+            System.out.println("There was an error during the sending of the message.");
             e.printStackTrace();
         }finally{
             if(connectionToVendor!=null)connectionToVendor.close();

@@ -4,39 +4,39 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeoutException;
 
 /*
-Classe astratta che definisce un semplice strumento per inviare e ricevere messaggi sotto forma di stringa.
+Abstract class that defines a simple tool to send and receive String messages.
  */
 
 public abstract class MessageExchanger implements AutoCloseable{
     /*
-    Invia un messaggio
-    Parametri: msg contiene il messaggio da inviare
-    Throws: message_exchanging_utilities.MessageForwardingException quando un errore impedisce l'invio del messaggio
+    Sends a message.
+    Parameters: msg contains the message to be sent
+    Throws: message_exchanging_utilities.MessageForwardingException if an error prevents the sending of the message
      */
     public abstract void send(String msg) throws MessageForwardingException;
 
     /*
-    Se c'è un messaggio in attesa di essere ricevuto, lo ritorna subito. Altrimenti lancia NoSuchElemetException.
-    Return: il messaggio ricevuto
-    Throws: message_exchanging_utilities.MessageReceptionException se un errore impedisce la ricezione del messaggio
-            NoSuchElementException se non c'è alcun messaggio in attesa di essere ricevuto
+    If there's a message waiting to be received, it immediately returns it. Otherwise, it throws a NoSuchElemetException.
+    Return: the received message
+    Throws: message_exchanging_utilities.MessageReceptionException if an error prevents the sending of the message
+            NoSuchElementException if there's no message waiting to be received
      */
     public abstract String receive() throws MessageReceptionException, NoSuchElementException;
 
     /*
-    Se c'è un messaggio in attesa di essere ricevuto, lo ritorna subito. Altrimenti attende fino a quando non esiste tale messaggio, e quindi lo ritorna.
-    Cerca di ricevere il messaggio ogni waitTime millisecondi.
-    Parametri:  waitTime è il tempo che deve attendere tra ogni tentativo di ricezione.
-    Return: il messaggio ricevuto
-    Throws: message_exchanging_utilities.MessageReceptionException se un errore impedisce la ricezione del messaggio
+    If there's a message waiting to be received, it immediately returns it. Otherwise, it waits until such a message exists, then it returns it.
+    It tries to receive a message every waitTime milliseconds.
+    Parameters:  waitTime is the time, in milliseconds, that it must wait between each reception attempt
+    Return: the received message
+    Throws: message_exchanging_utilities.MessageReceptionException if an error prevents the receiving of the message
      */
     public String waitForMessage(int waitTime) throws MessageReceptionException{
         while(true){
-            try{//tenta di ricevere un messaggio
+            try{//it tries to receive a message
                 return this.receive();
-            } catch (NoSuchElementException e){//se non c'è alcun messaggio...
+            } catch (NoSuchElementException e){//if there's no message...
                 try{
-                    Thread.sleep(waitTime);//...attende waitTime millisecondi e poi riprova
+                    Thread.sleep(waitTime);//...it waits waitTime milliseconds and then tries again
                 }catch(InterruptedException ex)
                 {
                     Thread.currentThread().interrupt();
@@ -46,35 +46,35 @@ public abstract class MessageExchanger implements AutoCloseable{
     }
 
     /*
-    Se c'è un messaggio in attesa di essere ricevuto, lo ritorna subito. Altrimenti attende al massimo millis millisecondi l'arrivo del messaggio.
-    Se il messaggio arriva entro millis millisecondi, allora lo ritorna appena lo riceve, altrimenti lancia una TimeoutException.
-    Il metodo tenta di ricevere il messaggio ogni waitTime millisecondi.
-    Parametri: millis sono i millisecondi da aspettare. Se non sono un multiplo di waitTime, vengono approssimati al successivo multiplo di waitTime.
-                waitTime è il tempo che deve attendere tra un tentativo e l'altro.
-    Return: il messaggio ricevuto
-    Throws: message_exchanging_utilities.MessageReceptionException se un errore impedisce la ricezione del messaggio
-            TimeoutException se non riceve un messaggio entro millis (approssimato come descritto sopra)
+    If there's a message waiting to be received, it immediately returns it. Otherwise, it waits at most millis milliseconds for a message to arrive.
+    If the message arrives within millis milliseconds, then it returns it as soon as it receives it, otherwise it throws a TimeoutException.
+    It tries to receive a message every waitTime milliseconds.
+    Parameters: millis is the maximum amount of milliseconds that must be waited. If it's not a multiple of waitTime, it's approximated to the following multiple of waitTime.
+               waitTime waitTime is the time, in milliseconds, that it must wait between each reception attempt
+    Return: the received message
+    Throws: message_exchanging_utilities.MessageReceptionException if an error prevents the receiving of the message
+            TimeoutException if it doesn't receive a message withing millis milliseconds (approximated as explained above)
      */
     public String waitForMessageForMilliseconds(int totalWaitTime, int waitTime) throws MessageReceptionException, TimeoutException {
         int i;
         for(i=0;i<totalWaitTime;i+=waitTime){
-            try{//tenta di ricevere un messaggio
+            try{//it tries to receive a message
                 return this.receive();
-            } catch (NoSuchElementException e){//se non c'è alcun messaggio...
+            } catch (NoSuchElementException e){//if there's no message...
                 try{
-                    Thread.sleep(waitTime);//...attende un terzo di secondo e poi riprova
+                    Thread.sleep(waitTime);//...it waits waitTime milliseconds and then tries again
                 }catch(InterruptedException ex)
                 {
                     Thread.currentThread().interrupt();
                 }
             }
         }
-        throw new TimeoutException("Non è stato rivevuto nessun messaggio negli ultimi "+i+" millisecondi.");
+        throw new TimeoutException("No message has been received in the last "+i+" milliseconds.");
     }
 
     /*
-    Se la connessione sottostante è basata sulla connessione, chiude la connessione. Altrimenti non fa nulla.
-    Se la connesione è gia chiusa, non fa nulla.
+    If the underlying communication is connection-oriented, it closes the connection. Otherwise it does nothing.
+    If the connection is already closed, it does nothing.
      */
     public abstract void close();
 }

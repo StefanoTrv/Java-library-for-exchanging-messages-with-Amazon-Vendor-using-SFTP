@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 /*
-MessageExchanger utilizzato per inviare e ricevere messaggi dai server di Amazon Vendor attraverso il protocollo SFTP.
+A Message Exchanger used to send and receive messages to and from the Amazon Vendor server through the SFTP protocol.
  */
 public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     private Session sessionDown;
@@ -18,22 +18,22 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     private Session sessionUp;
     private ChannelSftp sftpChannelUp;
     /*
-    Stabilisce una connessione in upload e download con i server di Amazon basandosi sulle impostazioni contenute nel file in settingsFilePath.
-    Throws: ConnectionException se si verifica un errore durante l'instaurazione della connessione.
-            IOException se si verifica un errore durante la lettura del file con le impostazioni
+    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath.
+    Throws: ConnectionException if an error occurs while establishing the connection
+            IOException if an error occurs while reading the settings file
      */
     public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphrase) throws ConnectionException, IOException {
         ConnectionSettings settings=new ConnectionSettings(settingsFilePath);
         JSch jsch = new JSch();
 
-        //configurazione delle connessioni
+        //configuration of the connections
         java.util.Properties config = new java.util.Properties();
         config.put("StrictHostKeyChecking", "no");
 
         try{
-            //Instauro la connessione in download
-            jsch.addIdentity(settings.privateKeyDown,passphrase+"D");
-            sessionDown = jsch.getSession( settings.usernameDown, "sftp-eu.amazonsedi.com", 2222 );
+            //Establishes a download connection
+            jsch.addIdentity(settings.getPrivateKeyDown(),passphrase+"D");
+            sessionDown = jsch.getSession( settings.getUsernameDown(), "sftp-eu.amazonsedi.com", 2222 );
             sessionDown.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionDown.setConfig(config);
             sessionDown.connect();
@@ -41,9 +41,9 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
             channelDown.connect();
             sftpChannelDown = (ChannelSftp) channelDown;
 
-            //Instauro la connessione in upload
-            jsch.addIdentity(settings.privateKeyUp,passphrase+"U");
-            sessionUp = jsch.getSession( settings.usernameUp, "sftp-eu.amazonsedi.com", 2222 );
+            //Establishes an upload connection
+            jsch.addIdentity(settings.getPrivateKeyUp(),passphrase+"U");
+            sessionUp = jsch.getSession( settings.getUsernameUp(), "sftp-eu.amazonsedi.com", 2222 );
             sessionUp.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionUp.setConfig(config);
             sessionUp.connect();
@@ -62,17 +62,17 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     }
 
     /*
-        Versione di send() in cui si può specificare il nome che avrà il file sul server remoto, utile solo in casi di test.
+    Version of send() in which the name of the file uploaded to the remote server can be chosen, useful only for testing.
      */
     public void send(String msg, String destinationFileName) throws MessageForwardingException {
         try{
-            //creo file locale temporaneo contenente il messagio
+            //creates a temporary file containing the message
             String localFileName = writeTempFile(msg);
 
-            //invio il file
+            //sends the file
             sftpChannelUp.put(localFileName,"upload/"+destinationFileName);
 
-            //elimino il file locale temporaneo
+            //deletes the local temporary file
             File localFile = new File(localFileName);
             localFile.delete();
         }catch (Exception e){
@@ -86,10 +86,10 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         Vector<ChannelSftp.LsEntry> fileList = null;
         String msg = null;
         try{
-            //trovo l'elenco dei file sul server remoto
+            //finds the list of the files on the remote server
             fileList = sftpChannelDown.ls("download");
 
-            //trovo il file più vecchio, corrispondente al messaggio più vecchio
+            //finds the older file, which corresponds to the oldest message
             for (ChannelSftp.LsEntry entry : fileList)
             {
                 if (!entry.getFilename().equals(".") && !entry.getFilename().equals(".."))
@@ -104,22 +104,22 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         }
 
         if(remoteFile==null){
-            throw new NoSuchElementException("Non ci sono messaggi da ricevere.");
+            throw new NoSuchElementException("There are no messages to be received.");
         }else{
             try{
-                //scarico su un file temporaneo il file trovato
+                //downloads on a temporary file the file that was found
                 String localFileName = "tempDownloadFileAmazonVendor"+Math.random();
                 sftpChannelDown.get("download/"+remoteFile.getFilename(), localFileName);
 
-                //leggo il file
+                //reads the file
                 msg = readFile(localFileName);
 
-                //elimino da remoto e da locale il file
+                //deletes both the remote and local copies of the file
                 sftpChannelDown.rm("download/"+remoteFile.getFilename());
                 File localFile = new File(localFileName);
                 localFile.delete();
 
-                //restituisco il messaggio
+                //return the message
                 return msg;
             } catch (Exception e){
                 throw new MessageReceptionException(e.getMessage());
@@ -135,6 +135,9 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         sessionUp.disconnect();
     }
 
+    /*
+    Private class containing the settings read from the settings file.
+     */
     private static class ConnectionSettings{
         private String privateKeyDown;
         private String privateKeyUp;
@@ -142,9 +145,9 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         private String usernameUp;
 
         /*
-        Legge il percorso delle chiavi private e il nome utente dal file delle impostazioni, quindi le inserisce negli attributi dell'oggetto.
-        Parametri: il percorso del file delle impostazioni
-        Throws: FileNotFoundException quando non trova il file
+        Reads the path of the private keys and the user name from the settings file, then it puts them in the attributes of the object.
+        Parameters: the path of the settings file
+        Throws: IOException if an error occurs while reading the settings file
          */
         public ConnectionSettings(String settingsFilePath) throws IOException {
             try{
@@ -155,7 +158,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
                 this.privateKeyUp=reader.readLine();
                 reader.close();
             }catch (IOException e){
-                throw new IOException("Errore durante la lettura del file delle impostazioni per Amazon Vendor.",e);
+                throw new IOException("An error occurred while reading the file containing the settings for Amazon Vendor.",e);
             }
         }
 
@@ -184,9 +187,9 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
                 content.append(reader.readLine()).append("\n");
             }
             reader.close();
-            return content.toString().substring(0,content.length()-1);//rimuovo l'ultimo a capo
+            return content.toString().substring(0,content.length()-1);//removes the last new line
         }catch (IOException e){
-            throw new IOException("Errore durante la lettura del file delle impostazioni per Amazon Vendor.",e);
+            throw new IOException("An error occurred while reading the file at \'"+filePath+"\'.",e);
         }
     }
 
