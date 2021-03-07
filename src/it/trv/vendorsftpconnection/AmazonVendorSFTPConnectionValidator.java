@@ -1,9 +1,7 @@
 /*
 Classe adibilita a convalidare una nuova connessione SFTP ai server di Amazon Vendor, superando i test di Amazon per la connessione.
  */
-package miscellaneous_utilities;
-
-import message_exchanging_utilities.*;
+package it.trv.vendorsftpconnection;
 
 import javax.swing.*;
 import java.io.IOException;

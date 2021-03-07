@@ -1,4 +1,4 @@
-package message_exchanging_utilities;
+package it.trv.vendorsftpconnection;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeoutException;

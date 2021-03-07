@@ -1,4 +1,4 @@
-package message_exchanging_utilities;
+package it.trv.vendorsftpconnection;
 
 public class MessageForwardingException  extends Exception{
     public MessageForwardingException(String errorMessage) {

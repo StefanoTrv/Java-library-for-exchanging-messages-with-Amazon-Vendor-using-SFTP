@@ -1,4 +1,4 @@
-package message_exchanging_utilities;
+package it.trv.vendorsftpconnection;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
