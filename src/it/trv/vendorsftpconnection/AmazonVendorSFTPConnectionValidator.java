@@ -7,14 +7,48 @@ import javax.swing.*;
 import java.io.IOException;
 
 public class AmazonVendorSFTPConnectionValidator {
-    public static void main(String[] args) {
+
+    /*
+    Validates a new SFTP connection with the Amazon Vendor server.
+    It can receive zero, one or three arguments:
+    - The first argument is the path of the settings file.
+    - The second and the third arguments are, respectively, the address and port of Amazon's SFTP server.
+    If it receives only two arguments, it ignores the second one and behaves as if it only received one.
+    A popup will appear asking for the passphrase.
+     */
+    public static void main(String[] args){
         String settingsFilePath = "settings_and_keys/AmazonVendorConnectionSettings.txt";
+        if(args.length>0){
+            settingsFilePath=args[0];
+        }
+        if(args.length>=3){
+            validateConnection(settingsFilePath, args[1], Integer.parseInt(args[2]));
+        } else {
+            validateConnection(settingsFilePath);
+        }
+    }
+
+    /*
+    It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
+    It uses the settings contained in the file in settingsFilePath and the default address and port for Europe.
+    A popup will appear asking for the passphrase.
+     */
+    public static void validateConnection(String settingsFilePath) {
+        validateConnection(settingsFilePath,"sftp-eu.amazonsedi.com", 2222);
+    }
+
+    /*
+    It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
+    It uses the settings contained in the file in settingsFilePath and the address and port specified in, respectively, host and port.
+    A popup will appear asking for the passphrase.
+     */
+    public static void validateConnection(String settingsFilePath, String host, int port) {
         SFTPBasedMessageExchangerForAmazonVendor connectionToVendor = null;
         try {
             //Asks the passphrase to the user
             String passphrase = JOptionPane.showInputDialog("Insert the password for the connection with the Amazon Vendor server:");
 
-            connectionToVendor = new SFTPBasedMessageExchangerForAmazonVendor(settingsFilePath, passphrase);
+            connectionToVendor = new SFTPBasedMessageExchangerForAmazonVendor(settingsFilePath, passphrase, host, port);
 
             System.out.println("Connection created with not errors");
 
