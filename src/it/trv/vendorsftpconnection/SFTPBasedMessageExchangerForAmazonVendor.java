@@ -17,12 +17,28 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     private ChannelSftp sftpChannelDown;
     private Session sessionUp;
     private ChannelSftp sftpChannelUp;
+
     /*
-    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath.
+    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the default host and port for Europe.
+    Parameters: settingsFilePath is the path of the settings file
+                passphrase is the passphrase for the private keys as explained in the documentation of this package
     Throws: ConnectionException if an error occurs while establishing the connection
             IOException if an error occurs while reading the settings file
      */
     public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphrase) throws ConnectionException, IOException {
+        this(settingsFilePath, passphrase, "sftp-eu.amazonsedi.com", 2222);
+    }
+
+    /*
+    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the specified address and port of the SFTP server.
+    Parameters: settingsFilePath is the path of the settings file
+                passphrase is the passphrase for the private keys as explained in the documentation of this package
+                host the address of the SFTP server
+                port the port of the SFTP server
+    Throws: ConnectionException if an error occurs while establishing the connection
+            IOException if an error occurs while reading the settings file
+     */
+    public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphrase, String host, int port) throws ConnectionException, IOException {
         ConnectionSettings settings=new ConnectionSettings(settingsFilePath);
         JSch jsch = new JSch();
 
@@ -33,7 +49,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         try{
             //Establishes a download connection
             jsch.addIdentity(settings.getPrivateKeyDown(),passphrase+"D");
-            sessionDown = jsch.getSession( settings.getUsernameDown(), "sftp-eu.amazonsedi.com", 2222 );
+            sessionDown = jsch.getSession( settings.getUsernameDown(), host, port );
             sessionDown.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionDown.setConfig(config);
             sessionDown.connect();
@@ -43,7 +59,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
 
             //Establishes an upload connection
             jsch.addIdentity(settings.getPrivateKeyUp(),passphrase+"U");
-            sessionUp = jsch.getSession( settings.getUsernameUp(), "sftp-eu.amazonsedi.com", 2222 );
+            sessionUp = jsch.getSession( settings.getUsernameUp(), host, port );
             sessionUp.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionUp.setConfig(config);
             sessionUp.connect();
