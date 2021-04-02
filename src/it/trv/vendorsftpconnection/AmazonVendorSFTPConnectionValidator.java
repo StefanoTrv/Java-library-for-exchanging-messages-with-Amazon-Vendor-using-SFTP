@@ -40,15 +40,17 @@ public class AmazonVendorSFTPConnectionValidator {
     /*
     It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
     It uses the settings contained in the file in settingsFilePath and the address and port specified in, respectively, host and port.
-    A popup will appear asking for the passphrase.
+    A popup will appear asking for the passphrases.
      */
     public static void validateConnection(String settingsFilePath, String host, int port) {
         SFTPBasedMessageExchangerForAmazonVendor connectionToVendor = null;
         try {
-            //Asks the passphrase to the user
-            String passphrase = JOptionPane.showInputDialog("Insert the password for the connection with the Amazon Vendor server:");
+            //Asks the passphrases to the user
+            String passphraseDown = JOptionPane.showInputDialog("Insert the password for the download connection with the Amazon Vendor server:");
 
-            connectionToVendor = new SFTPBasedMessageExchangerForAmazonVendor(settingsFilePath, passphrase, host, port);
+            String passphraseUp = JOptionPane.showInputDialog("Insert the password for the upload connection with the Amazon Vendor server:");
+
+            connectionToVendor = new SFTPBasedMessageExchangerForAmazonVendor(settingsFilePath, passphraseDown, passphraseUp, host, port);
 
             System.out.println("Connection created with not errors");
 

@@ -21,24 +21,26 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     /*
     It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the default host and port for Europe.
     Parameters: settingsFilePath is the path of the settings file
-                passphrase is the passphrase for the private keys as explained in the documentation of this package
+                passphraseDown is the passphrase for the private keys for the download connection
+                passphraseUp is the passphrase for the private keys for the upload connection
     Throws: ConnectionException if an error occurs while establishing the connection
             IOException if an error occurs while reading the settings file
      */
-    public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphrase) throws ConnectionException, IOException {
-        this(settingsFilePath, passphrase, "sftp-eu.amazonsedi.com", 2222);
+    public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphraseDown, String passphraseUp) throws ConnectionException, IOException {
+        this(settingsFilePath, passphraseDown, passphraseUp, "sftp-eu.amazonsedi.com", 2222);
     }
 
     /*
     It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the specified address and port of the SFTP server.
     Parameters: settingsFilePath is the path of the settings file
-                passphrase is the passphrase for the private keys as explained in the documentation of this package
+                passphraseDown is the passphrase for the private keys for the download connection
+                passphraseUp is the passphrase for the private keys for the upload connection
                 host the address of the SFTP server
                 port the port of the SFTP server
     Throws: ConnectionException if an error occurs while establishing the connection
             IOException if an error occurs while reading the settings file
      */
-    public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphrase, String host, int port) throws ConnectionException, IOException {
+    public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphraseDown, String passphraseUp, String host, int port) throws ConnectionException, IOException {
         ConnectionSettings settings=new ConnectionSettings(settingsFilePath);
         JSch jsch = new JSch();
 
@@ -48,7 +50,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
 
         try{
             //Establishes a download connection
-            jsch.addIdentity(settings.getPrivateKeyDown(),passphrase+"D");
+            jsch.addIdentity(settings.getPrivateKeyDown(),passphraseDown);
             sessionDown = jsch.getSession( settings.getUsernameDown(), host, port );
             sessionDown.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionDown.setConfig(config);
@@ -58,7 +60,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
             sftpChannelDown = (ChannelSftp) channelDown;
 
             //Establishes an upload connection
-            jsch.addIdentity(settings.getPrivateKeyUp(),passphrase+"U");
+            jsch.addIdentity(settings.getPrivateKeyUp(),passphraseUp);
             sessionUp = jsch.getSession( settings.getUsernameUp(), host, port );
             sessionUp.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
             sessionUp.setConfig(config);
