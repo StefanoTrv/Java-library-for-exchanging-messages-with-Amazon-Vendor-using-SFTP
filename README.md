@@ -149,3 +149,18 @@ A simple exception that is thrown when a message cannot be sent.
 A simple exception that is thrown when a message cannot be received because of some error.
 
 ## Conclusion
+Please contact me if you are having problems specific to this library or find any error in the code or in the documentation. Suggestions are also very welcome.
+
+If you are feeling generous, consider making a donation using one of the methods listed at the end of this document.
+
+*Stefano Travasci*
+
+---
+
+Paypal: [![Donate](https://www.paypalobjects.com/en_US/IT/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=9HMMFAZE248VN)
+
+Curecoin: B7CwvrRKzyLFckfZjeY7d1ex7WcRGhrToK
+
+Bitcoin: bc1qlyvpkva0rhut4cvwmvna9py765w9tu4603qllt
+
+<sub>*let me know if your favorite donation method is not in this list*</sub>
