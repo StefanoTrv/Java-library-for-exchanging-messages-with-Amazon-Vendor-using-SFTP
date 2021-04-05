@@ -20,7 +20,7 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
 
     /*
     It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the default host and port for Europe.
-    Parameters: settingsFilePath is the path of the settings file
+    Parameters: settingsFilePath is the path to the settings file
                 passphraseDown is the passphrase for the private keys for the download connection
                 passphraseUp is the passphrase for the private keys for the upload connection
     Throws: ConnectionException if an error occurs while establishing the connection
@@ -32,11 +32,11 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
 
     /*
     It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the specified address and port of the SFTP server.
-    Parameters: settingsFilePath is the path of the settings file
+    Parameters: settingsFilePath is the path to the settings file
                 passphraseDown is the passphrase for the private keys for the download connection
                 passphraseUp is the passphrase for the private keys for the upload connection
-                host the address of the SFTP server
-                port the port of the SFTP server
+                host is the address of the SFTP server
+                port is the port of the SFTP server
     Throws: ConnectionException if an error occurs while establishing the connection
             IOException if an error occurs while reading the settings file
      */

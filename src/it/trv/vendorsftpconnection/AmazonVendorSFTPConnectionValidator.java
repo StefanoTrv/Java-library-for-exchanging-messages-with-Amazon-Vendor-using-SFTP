@@ -14,7 +14,7 @@ public class AmazonVendorSFTPConnectionValidator {
     - The first argument is the path of the settings file.
     - The second and the third arguments are, respectively, the address and port of Amazon's SFTP server.
     If it receives only two arguments, it ignores the second one and behaves as if it only received one.
-    A popup will appear asking for the passphrase.
+    A popup will appear asking for the passphrases.
      */
     public static void main(String[] args){
         String settingsFilePath = "settings_and_keys/AmazonVendorConnectionSettings.txt";
@@ -31,7 +31,7 @@ public class AmazonVendorSFTPConnectionValidator {
     /*
     It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
     It uses the settings contained in the file in settingsFilePath and the default address and port for Europe.
-    A popup will appear asking for the passphrase.
+    A popup will appear asking for the passphrases.
      */
     public static void validateConnection(String settingsFilePath) {
         validateConnection(settingsFilePath,"sftp-eu.amazonsedi.com", 2222);
