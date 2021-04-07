@@ -20,6 +20,8 @@ Knowledge of the Amazon Vendor documentation is needed to understand and use thi
 
 As stated in the license, this software is provided "as is" without warranty of any kind. I'm not responsible for any issue and/or damage that this software may cause. Please read the full license for more legal jargon. This package has undergone limited testing, because I have no longer access to an Amazon Vendor account; please report any error or problem you might find, and I'll try to fix it to the best of my ability.
 
+All the classes in this library are contained in the package "`it.trv.vendorsftpconnection`".
+
 ## The connection settings file
 This file contains some of the information necessary to create a new session with the SFTP servers: the path to this file is one of the parameters that must be specified when establishing a connection. It contains the following data:
 * the first line contains the username for the download connection
