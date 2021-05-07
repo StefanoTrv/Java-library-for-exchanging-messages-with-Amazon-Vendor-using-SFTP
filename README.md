@@ -128,7 +128,7 @@ It can receive zero, one or three arguments:
 * The second and the third arguments are, respectively, the address and port of Amazon's SFTP server.
 
 If it receives only two arguments, it ignores the second one and behaves as if it only received one.  
-If it receives no argumentes, it uses the default path for the settings file: "*settings_and_keys/AmazonVendorConnectionSettings.txt*".  
+If it receives no arguments, it uses the default path for the settings file: "*settings_and_keys/AmazonVendorConnectionSettings.txt*".  
 A popup will appear asking for the passphrases.
 
 #### static void validateConnection(String settingsFilePath)
