@@ -1,4 +1,4 @@
-package it.trv.vendorsftpconnection;
+package it.trvi.vendorsftpconnection;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;

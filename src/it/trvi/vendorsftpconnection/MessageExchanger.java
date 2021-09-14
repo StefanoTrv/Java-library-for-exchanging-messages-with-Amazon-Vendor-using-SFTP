@@ -1,4 +1,4 @@
-package it.trv.vendorsftpconnection;
+package it.trvi.vendorsftpconnection;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeoutException;

@@ -2,7 +2,7 @@
   <artifact type="jar" name="SFTPConnectionWithAmazonVendor">
     <output-path>$PROJECT_DIR$/out/artifacts/SFTPConnectionWithAmazonVendor</output-path>
     <root id="archive" name="SFTPConnectionWithAmazonVendor.jar">
-      <element id="dir-copy" path="$PROJECT_DIR$/out/production/Java-library-for-exchanging-messages-with-Amazon-Vendor-based-on-SFTP" />
+      <element id="module-output" name="Java-library-for-exchanging-messages-with-Amazon-Vendor-based-on-SFTP" />
     </root>
   </artifact>
 </component>

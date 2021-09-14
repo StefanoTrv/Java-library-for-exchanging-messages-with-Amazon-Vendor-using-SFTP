@@ -1,7 +1,7 @@
 /*
 Class use to validate a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
  */
-package it.trv.vendorsftpconnection;
+package it.trvi.vendorsftpconnection;
 
 import javax.swing.*;
 import java.io.IOException;

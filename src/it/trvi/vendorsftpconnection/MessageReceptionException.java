@@ -1,4 +1,4 @@
-package it.trv.vendorsftpconnection;
+package it.trvi.vendorsftpconnection;
 
 public class MessageReceptionException  extends Exception{
     public MessageReceptionException(String errorMessage) {

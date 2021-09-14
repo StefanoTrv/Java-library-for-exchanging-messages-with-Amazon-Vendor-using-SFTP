@@ -1,4 +1,4 @@
-package it.trv.vendorsftpconnection;
+package it.trvi.vendorsftpconnection;
 
 public class ConnectionException extends Exception{
     public ConnectionException(String errorMessage) {
