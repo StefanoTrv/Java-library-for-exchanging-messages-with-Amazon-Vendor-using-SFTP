@@ -9,8 +9,8 @@ import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-/*
-A Message Exchanger used to send and receive messages to and from the Amazon Vendor server through the SFTP protocol.
+/**
+ * A Message Exchanger used to send and receive messages to and from the Amazon Vendor server through the SFTP protocol.
  */
 public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     private Session sessionDown;
@@ -18,27 +18,29 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
     private Session sessionUp;
     private ChannelSftp sftpChannelUp;
 
-    /*
-    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the default host and port for Europe.
-    Parameters: settingsFilePath is the path to the settings file
-                passphraseDown is the passphrase for the private keys for the download connection
-                passphraseUp is the passphrase for the private keys for the upload connection
-    Throws: ConnectionException if an error occurs while establishing the connection
-            IOException if an error occurs while reading the settings file
+    /**
+     * It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the default host and port for Europe.
+     *
+     * @param settingsFilePath is the path to the settings file
+     * @param passphraseDown is the passphrase for the private keys for the download connection
+     * @param passphraseUp is the passphrase for the private keys for the upload connection
+     * @throws ConnectionException if an error occurs while establishing the connection
+     * @throws IOException if an error occurs while reading the settings file
      */
     public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphraseDown, String passphraseUp) throws ConnectionException, IOException {
         this(settingsFilePath, passphraseDown, passphraseUp, "sftp-eu.amazonsedi.com", 2222);
     }
 
-    /*
-    It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the specified address and port of the SFTP server.
-    Parameters: settingsFilePath is the path to the settings file
-                passphraseDown is the passphrase for the private keys for the download connection
-                passphraseUp is the passphrase for the private keys for the upload connection
-                host is the address of the SFTP server
-                port is the port of the SFTP server
-    Throws: ConnectionException if an error occurs while establishing the connection
-            IOException if an error occurs while reading the settings file
+    /**
+     * It establishes an upload and download connection with the Amazon server using the settings contained in the file in settingsFilePath and the specified address and port of the SFTP server.
+     *
+     * @param settingsFilePath is the path to the settings file
+     * @param passphraseDown is the passphrase for the private keys for the download connection
+     * @param passphraseUp is the passphrase for the private keys for the upload connection
+     * @param host is the address of the SFTP server
+     * @param port is the port of the SFTP server
+     * @throws ConnectionException if an error occurs while establishing the connection
+     * @throws IOException if an error occurs while reading the settings file
      */
     public SFTPBasedMessageExchangerForAmazonVendor(String settingsFilePath, String passphraseDown, String passphraseUp, String host, int port) throws ConnectionException, IOException {
         ConnectionSettings settings=new ConnectionSettings(settingsFilePath);
@@ -79,8 +81,12 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         send(msg,"newMessage"+Math.random());
     }
 
-    /*
-    Version of send() in which the name of the file uploaded to the remote server can be chosen, useful only for testing.
+    /**
+     * Version of send() in which the name of the file uploaded to the remote server can be chosen, useful only for testing.
+     *
+     * @param msg contains the message to be sent
+     * @param destinationFileName the name of the file containing the message that will be uploaded to the remote server
+     * @throws MessageForwardingException if an error prevents the sending of the message
      */
     public void send(String msg, String destinationFileName) throws MessageForwardingException {
         try{
@@ -153,8 +159,8 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         sessionUp.disconnect();
     }
 
-    /*
-    Private class containing the settings read from the settings file.
+    /**
+     * Private class containing the settings read from the settings file.
      */
     private static class ConnectionSettings{
         private String privateKeyDown;
@@ -162,10 +168,11 @@ public class SFTPBasedMessageExchangerForAmazonVendor extends MessageExchanger{
         private String usernameDown;
         private String usernameUp;
 
-        /*
-        Reads the path of the private keys and the user name from the settings file, then it puts them in the attributes of the object.
-        Parameters: the path of the settings file
-        Throws: IOException if an error occurs while reading the settings file
+        /**
+         * Reads the path of the private keys and the username from the settings file, then it puts them in the attributes of the object.
+         *
+         * @param settingsFilePath the path of the settings file
+         * @throws IOException if an error occurs while reading the settings file
          */
         public ConnectionSettings(String settingsFilePath) throws IOException {
             try{

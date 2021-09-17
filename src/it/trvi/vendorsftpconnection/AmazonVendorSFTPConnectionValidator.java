@@ -1,20 +1,20 @@
-/*
-Class use to validate a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
- */
 package it.trvi.vendorsftpconnection;
 
 import javax.swing.*;
 import java.io.IOException;
 
+/**
+ * Class used to validate a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
+ */
 public class AmazonVendorSFTPConnectionValidator {
 
-    /*
-    Validates a new SFTP connection with the Amazon Vendor server.
-    It can receive zero, one or three arguments:
-    - The first argument is the path of the settings file.
-    - The second and the third arguments are, respectively, the address and port of Amazon's SFTP server.
-    If it receives only two arguments, it ignores the second one and behaves as if it only received one.
-    A popup will appear asking for the passphrases.
+    /**
+     * Validates a new SFTP connection with the Amazon Vendor server.
+     * It can receive zero, one or three arguments:
+     * - The first argument is the path of the settings file.
+     * - The second and the third arguments are, respectively, the address and port of Amazon's SFTP server.
+     * If it receives only two arguments, it ignores the second one and behaves as if it only received one.
+     * A popup will appear asking for the passphrases.
      */
     public static void main(String[] args){
         String settingsFilePath = "settings_and_keys/AmazonVendorConnectionSettings.txt";
@@ -28,19 +28,25 @@ public class AmazonVendorSFTPConnectionValidator {
         }
     }
 
-    /*
-    It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
-    It uses the settings contained in the file in settingsFilePath and the default address and port for Europe.
-    A popup will appear asking for the passphrases.
+    /**
+     * It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
+     * It uses the settings contained in the file in settingsFilePath and the default address and port for Europe.
+     * A popup will appear asking for the passphrases.
+     *
+     * @param settingsFilePath the path of the connection settings file
      */
     public static void validateConnection(String settingsFilePath) {
         validateConnection(settingsFilePath,"sftp-eu.amazonsedi.com", 2222);
     }
 
-    /*
-    It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
-    It uses the settings contained in the file in settingsFilePath and the address and port specified in, respectively, host and port.
-    A popup will appear asking for the passphrases.
+    /**
+     * It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.
+     * It uses the settings contained in the file in settingsFilePath and the address and port specified in, respectively, host and port.
+     * A popup will appear asking for the passphrases.
+     *
+     * @param settingsFilePath the path of the connection settings file
+     * @param host the address of Amazon's server
+     * @param port the port of Amazon's server that must be used in the validation
      */
     public static void validateConnection(String settingsFilePath, String host, int port) {
         SFTPBasedMessageExchangerForAmazonVendor connectionToVendor = null;

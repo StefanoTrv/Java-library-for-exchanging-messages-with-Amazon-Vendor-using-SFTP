@@ -141,10 +141,18 @@ It validates a new SFTP connection with the Amazon Vendor server, by passing the
 It uses the settings contained in the file in `settingsFilePath` and the default address and port for Europe.  
 A popup will appear asking for the passphrases.
 
+Parameters:  
+&ensp;&ensp;`settingsFilePath` the path of the connection settings file
+
 #### static void validateConnection(String settingsFilePath, String host, int port)
 It validates a new SFTP connection with the Amazon Vendor server, by passing the tests for the connection required by Amazon.  
 It uses the settings contained in the file in `settingsFilePath` and the address and port specified in, respectively, `host` and `port`.  
 A popup will appear asking for the passphrases.
+
+Parameters:  
+&ensp;&ensp;`settingsFilePath` the path of the connection settings file  
+&ensp;&ensp;`host` the address of Amazon's server  
+&ensp;&ensp;`port` the port of Amazon's server that must be used in the validation
 
 ### ConnectionException
 A simple exception that is thrown when a connection cannot be established.
