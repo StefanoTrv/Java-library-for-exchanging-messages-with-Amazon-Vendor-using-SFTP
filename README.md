@@ -176,7 +176,8 @@ If you are feeling generous, consider making a donation using one of the methods
 
 ---
 
-Paypal: [![Donate](https://www.paypalobjects.com/en_US/IT/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=9HMMFAZE248VN)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J81G2OSG)  
+[![Paypal](https://pics.paypal.com/00/s/NDU5Y2RmMjQtMTVmYi00MDIyLTgyMzMtMTFiNDY1MjUzMDA5/file.PNG)](https://www.paypal.com/donate?hosted_button_id=9HMMFAZE248VN)
 
 Curecoin: B7CwvrRKzyLFckfZjeY7d1ex7WcRGhrToK
 
